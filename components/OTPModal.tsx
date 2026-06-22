@@ -106,7 +106,9 @@ const OTPModal = ({
             </AlertDialogAction>
 
             {otpError && (
-              <div className="text-brand text-center">Failed to verify OTP</div>
+              <div className="text-brand text-center">
+                Ops! You entered an invalid OTP
+              </div>
             )}
 
             <div className="subtitle-2 mt-2 text-center text-light-100">
