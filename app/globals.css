@@ -636,7 +636,9 @@
   }
 
   .error-toast {
-    @apply bg-red rounded-[10px];
+    @apply rounded-[10px];
+    background-color: #EA6365 !important;
+    color: white !important;
   }
 
   /* Header */
