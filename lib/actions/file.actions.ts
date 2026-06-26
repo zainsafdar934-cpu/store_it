@@ -61,7 +61,7 @@ export const uploadFile = async ({
   }
 };
 
-const createQueries = (currentUser: Models.Document) => {
+const createQueries = (currentUser: AppwriteFile) => {
   const queries = [
     Query.or([
       Query.equal("ownerId", [currentUser.$id]),
@@ -88,7 +88,25 @@ export const getFiles = async () => {
       queries,
     );
 
-    return parseStringify(files);
+    const filesWithOwner = await Promise.all(
+      files.documents.map(async (file) => {
+        try {
+          const ownerResult = await database.listDocuments(
+            appwriteConfig.databaseId,
+            appwriteConfig.usersCollectionId,
+            [Query.equal("$id", [file.ownerId])],
+          );
+
+          const owner = ownerResult.total > 0 ? ownerResult.documents[0] : null;
+
+          return { ...file, owner };
+        } catch {
+          return { ...file, owner: null };
+        }
+      }),
+    );
+
+    return parseStringify({ ...files, documents: filesWithOwner });
   } catch (error) {
     handleError(error, "Failed to get files");
   }

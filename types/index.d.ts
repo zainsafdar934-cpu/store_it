@@ -2,6 +2,27 @@
 
 declare type FileType = "document" | "image" | "video" | "audio" | "other";
 
+declare interface AppwriteFile extends Models.Document {
+  name: string;
+  url: string;
+  type: FileType;
+  bucketFileId: string;
+  accountId: string;
+  ownerId: string;
+  extension: string;
+  size: number;
+  users: string[];
+  email: string;
+  $id: string;
+  owner: { fullName: string; email: string; avatar: string } | null;
+  $sequence: string;
+  $collectionId: string;
+  $databaseId: string;
+  $createdAt: string;
+  $updatedAt: string;
+  $permissions: string[];
+}
+
 declare interface ActionType {
   label: string;
   icon: string;
@@ -70,7 +91,7 @@ declare interface ThumbnailProps {
 }
 
 declare interface ShareInputProps {
-  file: Models.Document;
+  file: AppwriteFile;
   onInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onRemove: (email: string) => void;
 }
