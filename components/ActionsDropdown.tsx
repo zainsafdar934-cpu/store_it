@@ -23,9 +23,9 @@ import Link from "next/link";
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { renameFile } from "@/lib/actions/file.actions";
+import { renameFile, updateFileUsers } from "@/lib/actions/file.actions";
 import { usePathname } from "next/navigation";
-import { FileDetails } from "./ActionsModalContent";
+import { FileDetails, ShareInput } from "./ActionsModalContent";
 
 const ActionsDropdown = ({ file }: { file: AppwriteFile }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -33,6 +33,8 @@ const ActionsDropdown = ({ file }: { file: AppwriteFile }) => {
   const [action, setAction] = useState<ActionType | null>(null);
   const [name, setName] = useState(file.name);
   const [isLoading, setIsLoading] = useState(false);
+  const [emails, setEmails] = useState<string[]>([]);
+
   const path = usePathname();
 
   const closeAllModals = () => {
@@ -51,7 +53,7 @@ const ActionsDropdown = ({ file }: { file: AppwriteFile }) => {
     const actions = {
       rename: () =>
         renameFile({ fileId: file.$id, name, extension: file.extension, path }),
-      share: () => console.log("share"),
+      share: () => updateFileUsers({ fileId: file.$id, emails, path }),
       delete: () => console.log("delete"),
     };
 
@@ -59,6 +61,19 @@ const ActionsDropdown = ({ file }: { file: AppwriteFile }) => {
 
     if (success) closeAllModals();
     setIsLoading(false);
+  };
+
+  const handleRemoveUser = async (email: string) => {
+    const updatedEmails = emails.filter((e) => e !== email);
+
+    const success = await updateFileUsers({
+      fileId: file.$id,
+      emails: updatedEmails,
+      path,
+    });
+
+    if (success) setEmails(updatedEmails);
+    closeAllModals();
   };
 
   const renderDialogContent = () => {
@@ -78,7 +93,14 @@ const ActionsDropdown = ({ file }: { file: AppwriteFile }) => {
               onChange={(e) => setName(e.target.value)}
             />
           )}
-          {value && "details" && <FileDetails file={file} />}
+          {value === "details" && <FileDetails file={file} />}
+          {value === "share" && (
+            <ShareInput
+              file={file}
+              onInputChange={setEmails}
+              onRemove={handleRemoveUser}
+            />
+          )}
         </DialogHeader>
         {["rename", "delete", "share"].includes(value) && (
           <DialogFooter className="flex flex-col gap-3 md:flex-row">

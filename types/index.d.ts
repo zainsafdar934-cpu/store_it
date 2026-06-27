@@ -21,6 +21,7 @@ declare interface AppwriteFile extends Models.Document {
   $createdAt: string;
   $updatedAt: string;
   $permissions: string[];
+  $auth: string;
 }
 
 declare interface ActionType {
