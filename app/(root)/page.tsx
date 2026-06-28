@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Models } from "node-appwrite";
 
 import ActionDropdown from "@/components/ActionsDropdown";
 import { Chart } from "@/components/Chart";

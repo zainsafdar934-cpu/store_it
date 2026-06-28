@@ -29,7 +29,7 @@ import {
   updateFileUsers,
 } from "@/lib/actions/file.actions";
 import { usePathname } from "next/navigation";
-import { FileDetails, ShareInput } from "./ActionsModalContent";
+import { FileDetails, ShareInput } from "@/components/ActionsModalContent";
 
 const ActionsDropdown = ({ file }: { file: AppwriteFile }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);

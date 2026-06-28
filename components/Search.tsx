@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { getFiles } from "@/lib/actions/file.actions";
 import Thumbnail from "@/components/Thumbnail";
-import FormattedDateTime from "./FormattedDateTime";
+import FormattedDateTime from "@/components/FormattedDateTime";
 import { useDebounce } from "use-debounce";
 
 const Search = () => {
